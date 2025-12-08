@@ -1,3 +1,12 @@
+using Services;
+using Configuration.Extensions;
+using DbContext.Extensions;
+using DbRepos;
+using Encryption.Extensions;
+using Models.Interfaces;
+using Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace AppRazor;
 
 public class Program
@@ -8,6 +17,24 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
+
+        builder.Configuration.AddSecrets(builder.Environment);
+
+        builder.Services.AddEncryptions(builder.Configuration);
+        builder.Services.AddDatabaseConnections(builder.Configuration);
+        builder.Services.AddUserBasedDbContext();
+
+        builder.Services.AddVersionInfo();
+        builder.Services.AddEnvironmentInfo();
+
+        builder.Services.AddScoped<IAdminService, AdminServiceDb>();
+        builder.Services.AddScoped<AdminDbRepos>();
+        builder.Services.AddScoped<FriendsDbRepos>();
+        builder.Services.AddScoped<PetsDbRepos>();
+        builder.Services.AddScoped<AddressesDbRepos>();
+        builder.Services.AddScoped<QuotesDbRepos>();
+
+        builder.Services.AddScoped<IFriendsService, FriendsServiceDb>();
 
         var app = builder.Build();
 
