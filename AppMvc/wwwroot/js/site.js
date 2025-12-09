@@ -2,10 +2,3 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
-'use strict';
-
-function launchModal (event) {
-    var button = event.relatedTarget;
-    var mod_title = btn.dataset.modalTitle;
-}
