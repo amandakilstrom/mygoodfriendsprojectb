@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AppRazor.styles.css" asp-append-version="true" />
+
+
+    <!-- Bootstrap styles from their respective templates  -->
+    <link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/bootstrap/navbars-offcanvas.css" rel="stylesheet">
+    <link href="~/css/bootstrap/features.css" rel="stylesheet">
+    <link href="~/css/bootstrap/grid.css" rel="stylesheet">
+    <link href="~/css/bootstrap/sign-in.css" rel="stylesheet">
+    <link href="~/css/bootstrap/modals.css" rel="stylesheet">
 </head>
 
 <body>
@@ -64,11 +73,19 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Part of page Frame -->
+    <!-- Bootstrap Javascript -->
+    <script src="~/script/bootstrap/bootstrap.bundle.min.js"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+    <!-- .NET unobstrusive validation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+
+    <!-- SeidoAB script helpers -->
+    <script src="~/script/seido/modals.js" asp-append-verison="true"></script>
+    <script src="~/script/seido/select-list-items.js" asp-append-verison="true"></script>
+
+    @await RenderSectionAsync("script", false)
 </body>
 
 </html>
