@@ -14,7 +14,11 @@ namespace AppRazor.Pages
         private readonly IAddressesService _addressService;
         private readonly ILogger<OverviewPageModel> _logger;
 
+        [BindProperty]
         public List<IAddress> Addresses { get; set; } = new();
+
+        [BindProperty]
+        public List<Country> Countries { get; set; }
 
         public OverviewPageModel(IFriendsService friendsService, IAddressesService addressesService, ILogger<OverviewPageModel> logger)
         {
@@ -29,7 +33,7 @@ namespace AppRazor.Pages
 
             var addresses = await _addressService.ReadAddressesAsync(true, false, null, 0, 10);
 
-            var countries = Country.GetCountries(addresses);
+            Countries = Country.GetCountries(addresses.PageItems);
 
             return Page();
         }
@@ -37,7 +41,7 @@ namespace AppRazor.Pages
         public class Country
         {
             public string Name { get; set; }
-            int NrOfCountries { get; set; }
+            static int NrOfCountries { get; set; }
 
             public Country(string name, int nrOfCountries)
             {
@@ -45,7 +49,7 @@ namespace AppRazor.Pages
                 NrOfCountries = nrOfCountries;
             }
 
-            public List<Country> GetCountries(List<IAddress> addresses)
+            public static List<Country> GetCountries(List<IAddress> addresses)
             {
                 List<Country> countries = new();
                 int currentCount = 1;

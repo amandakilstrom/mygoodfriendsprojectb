@@ -14,9 +14,9 @@
 
 
     <div class="accordion" id="overviewAccordion">
-        @for (int i = 0; i < Model.Addresses.Count; i++)
+        @for (int i = 0; i < Model.Countries.Count; i++)
         {
-            var country = Model.Addresses[i].Country;
+            var country = Model.Countries[i];
             var collapseId = $"collapse{i}";
             var headingId = $"heading{i}";
 
