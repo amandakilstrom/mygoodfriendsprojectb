@@ -90,6 +90,9 @@ public class FriendsDbRepos
                         (i.FirstName.ToLower().Contains(filter) ||
                             i.LastName.ToLower().Contains(filter)))
 
+            //Order friends by Country
+            .OrderBy(c => c.AddressDbM.Country).Reverse()
+
             //Adding paging
             .Skip(pageNumber * pageSize)
             .Take(pageSize)

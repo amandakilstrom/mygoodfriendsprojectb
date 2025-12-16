@@ -14,7 +14,7 @@ namespace AppRazor.Pages
         private async Task<int> nrOfFriends()
         {
             var info = await _admin_service.GuestInfoAsync();
-            return info.Item.Db.NrSeededFriends + info.Item.Db.NrUnseededFriends;
+            return info.Item.Db.NrSeededFriends;
         }
 
         [BindProperty]

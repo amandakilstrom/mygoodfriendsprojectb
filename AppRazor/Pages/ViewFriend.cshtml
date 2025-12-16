@@ -1,0 +1,95 @@
+﻿@page
+@using System.Diagnostics.Eventing.Reader
+@model AppRazor.Pages.ViewFriendModel
+@{
+    ViewData["Title"] = "View Friend";
+}
+
+<div class="container px-4 py-4" id="view-friend">
+    <h2 class="pb-2 border-bottom">
+    View details of a friend
+        <a href="~/Members/EditGroup?id=@Model.Friend.FriendId">
+            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#edit" /></svg>
+        </a>
+    </h2>
+    <form class="needs-validation" novalidate>
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+            <div class="col-md-7 col-lg-10">
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="friendName" class="form-label">Friend Name</label>
+                        <input type="text" class="form-control" id="friendName" value="@Model.Friend.FirstName @Model.Friend.LastName" readonly>
+                    </div>
+
+                    @if (Model.Friend.Address is not null)
+                    {
+                    <div class="col-sm-6">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="country" value="@Model.Friend.Address.Country" readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" value="@Model.Friend.Address.City" readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="street" class="form-label">Street</label>
+                        <input type="text" class="form-control" id="street" value="@Model.Friend.Address.StreetAddress" readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="zipCode" class="form-label">Zip code</label>
+                        <input type="text" class="form-control" id="zipCode" value="@Model.Friend.Address.ZipCode" readonly>
+                    </div>
+                    }
+                    else
+                    {
+                    <div class="col-sm-12">
+                        <label class="form-label">No address available</label>
+                    </div>   
+                    }
+                </div>
+
+                @if (Model.Friend.Pets is not null)
+                {
+                <div class="row g-1">
+                    <h3 class="pb-2">Pets</h3>
+
+                    <div class="row mb-2 text-center">
+                        <div class="col-md-6 themed-grid-head-col">Name</div>
+                        <div class="col-md-6 themed-grid-head-col">Kind</div>
+                    </div>
+                    @foreach (var item in Model.Friend.Pets)
+                    {
+                        <div class="row mb-2 text-center">
+                            <div class="col-md-6 themed-grid-col">@item.Name</div>
+                            <div class="col-md-6 themed-grid-col">@item.Kind</div>
+                        </div>
+                    }
+                </div>
+                }
+
+                <div class="row g-1">
+                    <h3 class="pb-2">Quotes</h3>
+
+                    <div class="row mb-2 text-center">
+                        <div class="col-md-10 themed-grid-head-col">Quote</div>
+                        <div class="col-md-2 themed-grid-head-col">Author</div>
+                    </div>
+                    @foreach (var item in Model.Friend.Quotes)
+                    {
+                        <div class="row mb-2 text-center">
+                            <div class="col-md-10 themed-grid-col">@item.QuoteText</div>
+                            <div class="col-md-2 themed-grid-col">@item.Author</div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

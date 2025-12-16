@@ -42,11 +42,11 @@ namespace AppRazor.Pages
                 ThisPageNr = pagenr;
             }
 
-            var response = await _friendsService.ReadFriendsAsync(UseSeeds, false, "", ThisPageNr, PageSize);
+            var response = await _friendsService.ReadFriendsAsync(true, false, null, ThisPageNr, PageSize);
             Friends = response.PageItems;
             FriendsCount = response.DbItemsCount;
 
-            UpdatePagination(FriendsCount);
+            UpdatePagination(response.DbItemsCount);
 
             return Page();
         }

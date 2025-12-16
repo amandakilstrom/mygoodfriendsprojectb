@@ -7,7 +7,7 @@
 @attribute [IgnoreAntiforgeryToken]
 
 <!-- Page List of friends -->
-<div class="container px-4 py-4" id="list-of-groups">
+<div class="container px-4 py-4" id="list-of-friends">
     <h2 class="pb-2 border-bottom">List of friends</h2>
 
     <p>Below are a list of friends.</p>
@@ -20,14 +20,46 @@
 
                     @if (Model.Friends is not null)
                     {
-                        @foreach (var friend in Model.Friends)
+                        @foreach (var item in Model.Friends)
                         {
                             <div class="col-md-10 themed-grid-col">
-                                <a href="~/ViewGroup?id=@friend.FriendId">
-                                    @friend.FirstName @friend.LastName
+                                <a href="~/ViewFriend?id=@item.FriendId">
+                                    @item.FirstName @item.LastName
                                 </a>
+                                @if (item.Address is not null)
+                                {
+                                    <div>
+                                        @item.Address.Country
+                                    </div>
+                                }
+                                else 
+                                {
+                                    <div>
+                                        No address available
+                                    </div>
+                                }
                             </div>
                         }
+                        <nav aria-label="Standard pagination example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link" href="~/ListOfFriends?pagenr=@Model.PrevPageNr" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                @for (int i = 0; i < Model.NrVisiblePages; i++)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="~/ListOfFriends?pagenr=@i">@(i + 1)</a>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    <a class="page-link" href="~/ListOfFriends?pagenr=@Model.NextPageNr" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     }
                 </div>
             </div>
