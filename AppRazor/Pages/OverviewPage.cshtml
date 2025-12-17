@@ -14,47 +14,38 @@
 
 
     <div class="accordion" id="overviewAccordion">
-        @for (int i = 0; i < Model.Countries.Count; i++)
+        @foreach (var countryGroup in Model.Overview.GroupBy(o => o.Country))
         {
-            var country = Model.Countries[i];
-            var collapseId = $"collapse{i}";
-            var headingId = $"heading{i}";
+            var collapseId = $"collapse_{countryGroup.Key}";
+            var headingId = $"heading_{countryGroup.Key}";
 
             <div class="accordion-item">
+
                 <h2 class="accordion-header" id="@headingId">
                     <button class="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#@collapseId">
-                        @country.Name
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#@collapseId">
+                        @countryGroup.Key
                     </button>
                 </h2>
 
                 <div id="@collapseId"
                     class="accordion-collapse collapse"
-                    data-bs-parents="#overviewAccordion">
+                    data-bs-parent="#overviewAccordion">
 
                     <div class="accordion-body">
-
-                        @foreach (var city in country.Cities)
+                        @foreach (var city in countryGroup)
                         {
-                           <div class="mb-3">
-                                <h6 class="mb-1">@city.Name</h6>
-
-                                @if (city.Friends.Any())
-                                {
-                                   <p>@city.Friends.Count() friends</p>
-
-                                   @if (city.Friends.Pets.Any())
-                                   {
-                                        <p>@city.Friends.Pets.Count() pets</p>
-                                   } 
-                                }
-                           </div> 
+                            <div class="mb-2">
+                                <strong>@city.City</strong><br />
+                                @city.FriendCount friends<br />
+                                @city.PetsCount pets
+                            </div>
                         }
                     </div>
-                </div>
 
+                </div>
             </div>
         }
     </div>
