@@ -8,11 +8,14 @@
 <div class="container px-4 py-4" id="view-friend">
     <h2 class="pb-2 border-bottom">
     View details of a friend
-        <a href="~/Members/EditGroup?id=@Model.Friend.FriendId">
+        <a href="~/EditFriend?id=@Model.Friend.FriendId">
             <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#edit" /></svg>
         </a>
     </h2>
     <form class="needs-validation" novalidate>
+        <input type="hidden" name="petId" data-seido-selected-item-id-target />
+        <input type="hidden" name="quoteId" data-seido-selected-item-id-target />
+
         <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
             <div class="col-md-7 col-lg-10">
 
@@ -85,12 +88,21 @@
                     <div class="row mb-2 text-center">
                         <div class="col-md-6 themed-grid-head-col">Name</div>
                         <div class="col-md-6 themed-grid-head-col">Kind</div>
+                        <div class="col-md-2 themed-grid-head-col">Option</div>
                     </div>
                     @foreach (var item in Model.Friend.Pets)
                     {
                         <div class="row mb-2 text-center">
                             <div class="col-md-6 themed-grid-col">@item.Name</div>
                             <div class="col-md-6 themed-grid-col">@item.Kind</div>
+                            <div class="col-md-2 themed-grid-col">
+                                <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#delModal"
+                                    data-seido-modal-body="@item.Name is about to be deleted."
+                                    data-seido-selected-item-id="@item.PetId"
+                                    data-seido-delete-type="pet">
+                                    Del
+                                </button>
+                            </div>
                         </div>
                     }
                 </div>
@@ -102,14 +114,58 @@
                     <div class="row mb-2 text-center">
                         <div class="col-md-10 themed-grid-head-col">Quote</div>
                         <div class="col-md-2 themed-grid-head-col">Author</div>
+                        <div class="col-md-2 themed-grid-head-col">Option</div>
                     </div>
                     @foreach (var item in Model.Friend.Quotes)
                     {
                         <div class="row mb-2 text-center">
                             <div class="col-md-10 themed-grid-col">@item.QuoteText</div>
                             <div class="col-md-2 themed-grid-col">@item.Author</div>
+                            <div class="col-md-2 themed-grid-col">
+                                <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#delModal"
+                                    data-seido-modal-body="The Quote is about to be deleted."
+                                    data-seido-selected-item-id="@item.QuoteId"
+                                    data-seido-delete-type="quote">
+                                    Del
+                                </button>
+                            </div>
                         </div>
                     }
+                </div>
+
+                <!-- Delete modal -->
+                <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="softModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-danger" id="softModalLabel">Confirm deletion</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                
+                                
+                                <!-- Delete PET -->
+                                <button type="submit" 
+                                asp-page-handler="DeletePet"
+                                class="btn btn-danger"
+                                id="btnDeletePet">
+                                Ok
+                                </button>
+
+                                <!-- Delete QUOTE -->
+                                <button type="submit"
+                                asp-page-handler="DeleteQuote"
+                                class="btn btn-danger"
+                                id="btnDeleteQuote">
+                                Ok
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
