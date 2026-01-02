@@ -36,6 +36,8 @@ public class Program
 
         builder.Services.AddScoped<IFriendsService, FriendsServiceDb>();
         builder.Services.AddScoped<IAddressesService, AddressesServiceDb>();
+        builder.Services.AddScoped<IPetsService, PetsServiceDb>();
+        builder.Services.AddScoped<IQuotesService, QuotesServiceDb>();
 
         var app = builder.Build();
 

@@ -125,7 +125,7 @@ namespace AppRazor.Pages
                     friendDto.AddressId = FriendInput.Address.AddressId;
                 }
             }
-            
+
             await _frService.UpdateFriendAsync(friendDto);
 
             return RedirectToPage("ViewFriend", new { id = friend.FriendId });
@@ -151,6 +151,9 @@ namespace AppRazor.Pages
 
             public AddressIM Address { get; set; }
 
+            public List<PetIM> Pets { get; set; } = new();
+            public List<QuoteIM> Quotes { get; set; } = new();
+
             public FriendIM() { }
 
             public FriendIM(IFriend model)
@@ -166,6 +169,8 @@ namespace AppRazor.Pages
                     ? new AddressIM(model.Address)
                     : new AddressIM { StatusIM = StatusIM.Inserted };
 
+                Pets = model.Pets?.Select(p => new PetIM(p)).ToList();
+                Quotes = model.Quotes?.Select(q => new QuoteIM(q)).ToList();
             }
 
             public IFriend UpdateModel(IFriend model)
@@ -256,6 +261,46 @@ namespace AppRazor.Pages
                 City = this.City,
                 Country = this.Country
             };
+        }
+
+        public class PetIM
+        {
+            public StatusIM StatusIM { get; set; }
+
+            public Guid PetId { get; set; }
+
+            public string Name { get; set; }
+            public AnimalKind Kind { get; set; }
+
+            public PetIM() { }
+
+            public PetIM(IPet model)
+            {
+                StatusIM = StatusIM.Unchanged;
+                PetId = model.PetId;
+                Name = model.Name;
+                Kind = model.Kind;
+            }
+        }
+
+        public class QuoteIM
+        {
+            public StatusIM StatusIM { get; set; }
+
+            public Guid QuoteId { get; set; }
+
+            public string QuoteText { get; set; }
+            public string Author { get; set; }
+
+            public QuoteIM() { }
+
+            public QuoteIM(IQuote model)
+            {
+                StatusIM = StatusIM.Unchanged;
+                QuoteId = model.QuoteId;
+                QuoteText = model.QuoteText;
+                Author = model.Author;
+            }
         }
     }
 }

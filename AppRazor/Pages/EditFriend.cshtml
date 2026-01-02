@@ -11,10 +11,14 @@
         <h2 class="pb-2 border-bottom">
             @Model.PageHeader
             <button class="btn btn-primary-outline" type="submit" asp-page-handler="Save">
-                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#save" /></svg>
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#save" />
+                </svg>
             </button>
             <button class="btn btn-primary-outline" type="submit" asp-page-handler="Undo">
-                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#undo" /></svg>
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#undo" />
+                </svg>
             </button>
         </h2>
 
@@ -97,6 +101,26 @@
 
             </div>
         </div>
+
+        @for (int i = 0; i < Model.FriendInput.Pets.Count; i++)
+        {
+            <div class="row @(Model.FriendInput.Pets[i].StatusIM == StatusIM.Deleted ? "d-none" : "")">
+
+                <input asp-for="FriendInput.Pets[i].PetId" type="hidden" />
+                <input asp-for="FriendInput.Pets[i].StatusIM" type="hidden" />
+
+                <div class="col-md-8">
+                    @Model.FriendInput.Pets[i].Name (@Model.FriendInput.Pets[i].Kind)
+                </div>
+
+                <div class="col-md-4">
+                    <button type="submit" asp-page-handler="DeletePet" class="btn btn-danger btn-sm"
+                        data-seido-selected-item-id="@Model.FriendInput.Pets[i].PetId">
+                        Del
+                    </button>
+                </div>
+            </div>
+        }
 
     </form>
 </div>
