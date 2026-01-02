@@ -15,6 +15,8 @@ namespace AppRazor.Pages
 
         readonly IFriendsService _frService = null;
         readonly IAddressesService _adService = null;
+        readonly IPetsService _petService = null;
+        readonly IQuotesService _quoteService;
 
         [BindProperty]
         public FriendIM FriendInput { get; set; }
@@ -25,10 +27,12 @@ namespace AppRazor.Pages
         public ModelValidationResult ValidationResult { get; set; } = new ModelValidationResult(false, null, null);
 
 
-        public EditFriendModel(IFriendsService frService, IAddressesService adService)
+        public EditFriendModel(IFriendsService frService, IAddressesService adService, IPetsService petService, IQuotesService quoteService)
         {
             _frService = frService;
             _adService = adService;
+            _petService = petService;
+            _quoteService = quoteService;
         }
 
         public async Task<IActionResult> OnGet()
@@ -72,9 +76,10 @@ namespace AppRazor.Pages
             var a = FriendInput.Address;
 
             if (a.StatusIM != StatusIM.Inserted)
+            {
                 a.StatusIM = StatusIM.Modified;
-
-            // Commit changes
+            }
+            
             a.StreetAddress = a.editStreetAddress;
             a.ZipCode = a.editZipCode;
             a.City = a.editCity;
@@ -98,6 +103,23 @@ namespace AppRazor.Pages
                 ValidationResult = vr;
                 return Page();
             }
+
+            // DELETE Pets
+            var deletedPets = FriendInput.Pets.Where(p => p.StatusIM == StatusIM.Deleted).ToList();
+            foreach (var pet in deletedPets)
+            {
+                await _petService.DeletePetAsync(pet.PetId);
+            }
+
+            // DELETE Quotes
+            var deletedQuotes = FriendInput.Quotes.Where(q => q.StatusIM == StatusIM.Deleted).ToList();
+            foreach (var quote in deletedQuotes)
+            {
+                await _quoteService.DeleteQuoteAsync(quote.QuoteId);
+            }
+
+            FriendInput.Pets.RemoveAll(p => p.StatusIM == StatusIM.Deleted);
+            FriendInput.Quotes.RemoveAll(q => q.StatusIM == StatusIM.Deleted);
 
             var fr = await _frService.ReadFriendAsync(FriendInput.FriendId, false);
 
@@ -131,7 +153,19 @@ namespace AppRazor.Pages
             return RedirectToPage("ViewFriend", new { id = friend.FriendId });
         }
 
+        public IActionResult OnPostDeletePet(Guid petId)
+        {
+            FriendInput.Pets.First(p => p.PetId == petId).StatusIM = StatusIM.Deleted;
 
+            return Page();
+        }
+
+        public IActionResult OnPostDeleteQuote(Guid quoteId)
+        {
+            FriendInput.Quotes.First(q => q.QuoteId == quoteId).StatusIM = StatusIM.Deleted;
+
+            return Page();
+        }
 
         public class FriendIM
         {
